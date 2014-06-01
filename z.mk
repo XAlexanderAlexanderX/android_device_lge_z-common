@@ -24,12 +24,11 @@ DEVICE_PACKAGE_OVERLAYS := $(LOCAL_PATH)/overlay
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
-
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/init.g2.rc:root/init.g2.rc \
-    $(LOCAL_PATH)/init.g2.usb.rc:root/init.g2.usb.rc \
-    $(LOCAL_PATH)/ueventd.g2.rc:root/ueventd.g2.rc \
-    $(LOCAL_PATH)/fstab.g2:root/fstab.g2
+    $(LOCAL_PATH)/init.z.rc:root/init.z.rc \
+    $(LOCAL_PATH)/init.z.usb.rc:root/init.z.usb.rc \
+    $(LOCAL_PATH)/ueventd.z.rc:root/ueventd.z.rc \
+    $(LOCAL_PATH)/fstab.z:root/fstab.z
 
 
 PRODUCT_COPY_FILES += \
@@ -99,7 +98,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
 
 PRODUCT_PROPERTY_OVERRIDES += \
-        ro.sf.lcd_density=480 \
+    ro.sf.lcd_density=480 \
 	ro.opengles.version=196608
 
 # Audio Configuration
@@ -143,7 +142,7 @@ PRODUCT_PACKAGES += \
 
 # Local wrapper for fixups
 PRODUCT_PACKAGES += \
-	camera.g2
+	camera.z
 
 PRODUCT_PACKAGES += \
 	audio_policy.msm8974 \
@@ -154,7 +153,7 @@ PRODUCT_PACKAGES += \
 	libaudio-resampler
 
 PRODUCT_PACKAGES += \
-        libmm-omxcore \
+    libmm-omxcore \
 	libdivxdrmdecrypt \
 	libOmxVdec \
 	libOmxVenc \
@@ -190,7 +189,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     media.aac_51_output_enabled=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
-        debug.egl.recordable.rgba8888=1
+    debug.egl.recordable.rgba8888=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.qc.sensors.wl_dis=true
@@ -199,16 +198,16 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp
 
 PRODUCT_PACKAGES += \
-        lights.g2
+    lights.z
 
 PRODUCT_COPY_FILES += \
-        $(LOCAL_PATH)/configs/bcmdhd.cal:system/etc/wifi/bcmdhd.cal
+    $(LOCAL_PATH)/configs/bcmdhd.cal:system/etc/wifi/bcmdhd.cal
 
 # This hw ships locked, work around it with loki
 PRODUCT_PACKAGES += \
-        loki.sh \
-        loki_patch \
-        loki_flash
+    loki.sh \
+    loki_patch \
+    loki_flash
 
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)

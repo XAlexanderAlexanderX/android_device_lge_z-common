@@ -35,17 +35,17 @@ TARGET_KRAIT_BIONIC_PLDSIZE := 64
 TARGET_NO_RADIOIMAGE := true
 TARGET_NO_BOOTLOADER := true
 
-TARGET_SPECIFIC_HEADER_PATH := device/lge/g2-common/include
+TARGET_SPECIFIC_HEADER_PATH := device/lge/z-common/include
 
 # Kernel information
 BOARD_KERNEL_BASE     := 0x00000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=g2 user_debug=31 msm_rtb.filter=0x0
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=z user_debug=31 msm_rtb.filter=0x0
 BOARD_MKBOOTIMG_ARGS  := --ramdisk_offset 0x05000000 --tags_offset 0x04800000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 
-BOARD_CUSTOM_BOOTIMG_MK := device/lge/g2-common/releasetools/mkbootimg.mk
-TARGET_KERNEL_SOURCE := kernel/lge/msm8974
+BOARD_CUSTOM_BOOTIMG_MK := device/lge/z-common/releasetools/mkbootimg.mk
+TARGET_KERNEL_SOURCE := kernel/lge/zee ## Stock src
 
 BOARD_USES_ALSA_AUDIO:= true
 BOARD_USES_FLUENCE_INCALL := true
@@ -68,7 +68,7 @@ WIFI_DRIVER_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_apsta.bin"
 WIFI_DRIVER_FW_PATH_P2P     := "/system/etc/firmware/fw_bcmdhd_p2p.bin"
 
-BOARD_EGL_CFG := device/lge/g2-common/egl.cfg
+BOARD_EGL_CFG := device/lge/z-common/egl.cfg
 
 ## the main variant works... except for video scaling :(
 TARGET_QCOM_DISPLAY_VARIANT := mdss
@@ -91,7 +91,7 @@ BOARD_HAVE_LOW_LATENCY_AUDIO := true
 TARGET_QCOM_MEDIA_VARIANT := v4l2
 
 RECOVERY_FSTAB_VERSION = 2
-TARGET_RECOVERY_FSTAB = device/lge/g2-common/fstab.g2
+TARGET_RECOVERY_FSTAB = device/lge/z-common/fstab.z
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
 ENABLE_LOKI_RECOVERY := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
@@ -108,8 +108,8 @@ BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/g2-common/bluetooth
-BOARD_BLUEDROID_VENDOR_CONF := device/lge/g2-common/bluetooth/vnd_g2.txt
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/z-common/bluetooth
+BOARD_BLUEDROID_VENDOR_CONF := device/lge/z-common/bluetooth/vnd_z.txt
 
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
@@ -117,10 +117,10 @@ TARGET_NO_RPC := true
 
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-BOARD_HARDWARE_CLASS := device/lge/g2-common/cmhw/
+BOARD_HARDWARE_CLASS := device/lge/z-common/cmhw/
 
 BOARD_SEPOLICY_DIRS += \
-        device/lge/g2-common/sepolicy
+        device/lge/z-common/sepolicy
 
 BOARD_SEPOLICY_UNION += \
 	file_contexts \
@@ -151,10 +151,10 @@ BOARD_SEPOLICY_UNION += \
 	ueventd.te \
 	wpa_supplicant.te
 
-BOARD_NFC_HAL_SUFFIX := g2
+BOARD_NFC_HAL_SUFFIX := z
 
-BOARD_RIL_CLASS := ../../../device/lge/g2-common/ril/
-TARGET_RELEASETOOLS_EXTENSIONS := device/lge/g2-common/releasetools
+BOARD_RIL_CLASS := ../../../device/lge/z-common/ril/
+TARGET_RELEASETOOLS_EXTENSIONS := device/lge/z-common/releasetools
 
 COMMON_GLOBAL_CFLAGS += -DBOARD_CHARGING_CMDLINE_NAME='"androidboot.mode"' -DBOARD_CHARGING_CMDLINE_VALUE='"chargerlogo"'
 BOARD_USES_QC_TIME_SERVICES := true
