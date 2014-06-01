@@ -17,7 +17,7 @@
 #ifndef _BDROID_BUILDCFG_H
 #define _BDROID_BUILDCFG_H
 
-#define BTM_DEF_LOCAL_NAME   "LG G2"
+#define BTM_DEF_LOCAL_NAME   "LG Flex"
 #define BTA_DISABLE_DELAY 1000 /* in milliseconds */
 
 #endif
