@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Include path
+TARGET_SPECIFIC_HEADER_PATH := device/lge/z-common/include
+
 TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 TARGET_CPU_ABI := armeabi-v7a
@@ -76,6 +79,11 @@ OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 COMMON_GLOBAL_CFLAGS += -DLG_CAMERA_HARDWARE -DLPA_DEFAULT_BUFFER_SIZE=512
 #-DQCOM_BSP -DQCOM_HARDWARE
 TARGET_DISPLAY_USE_RETIRE_FENCE := true
+
+TARGET_QCOM_DISPLAY_VARIANT := caf
+
+# Media 
+TARGET_QCOM_MEDIA_VARIANT := caf
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
