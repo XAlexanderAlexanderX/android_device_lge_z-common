@@ -29,6 +29,7 @@
 
 #include <utils/threads.h>
 #include <utils/String8.h>
+#include <utils/Errors.h>
 #include <hardware/hardware.h>
 #include <hardware/camera.h>
 #include <camera/Camera.h>
@@ -53,7 +54,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
          version_major: 1,
          version_minor: 0,
          id: CAMERA_HARDWARE_MODULE_ID,
-         name: "Flex Camera Wrapper",
+         name: "G2 Camera Wrapper",
          author: "The CyanogenMod Project",
          methods: &camera_module_methods,
          dso: NULL, /* remove compilation warnings */
@@ -253,7 +254,7 @@ int camera_start_preview(struct camera_device * device)
         return -EINVAL;
 
     rc = VENDOR_CALL(device, start_preview);
-    previewRunning = rc > 0;
+    previewRunning = (rc == android::NO_ERROR);
     return rc;
 }
 

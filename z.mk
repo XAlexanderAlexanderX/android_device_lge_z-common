@@ -30,9 +30,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ueventd.z.rc:root/ueventd.z.rc \
     $(LOCAL_PATH)/fstab.z:root/fstab.z
 
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf \
     $(LOCAL_PATH)/configs/snd_soc_msm_Taiko:system/etc/snd_soc_msm/snd_soc_msm_Taiko \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
@@ -110,26 +110,25 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Audio Configuration
 PRODUCT_PROPERTY_OVERRIDES += \
-	persist.audio.fluence.voicecall=true \
+	persist.audio.handset.mic.type=digital \
 	persist.audio.dualmic.config=endfire \
+	persist.audio.fluence.voicecall=true \
+	persist.audio.fluence.voicerec=false \
+	persist.audio.fluence.speaker=false \
 	af.resampler.quality=4 \
 	audio.offload.buffer.size.kb=32 \
 	audio.offload.gapless.enabled=false \
 	av.offload.enable=true
 
-# Do not power down SIM card when modem is sent to Low Power Mode.
+# Radio
 PRODUCT_PROPERTY_OVERRIDES += \
-	persist.radio.apm_sim_not_pwdn=1
-
-# Ril sends only one RIL_UNSOL_CALL_RING, so set call_ring.multiple to false
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.telephony.call_ring.multiple=0
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.telephony.ril_class=LgeLteRIL \
+	persist.radio.apm_sim_not_pwdn=1 \
+	ro.telephony.call_ring.multiple=0 \
+	persist.radio.mode_pref_nv10=1 \
+    ro.telephony.ril_class=LgeLteRIL \
 	ro.telephony.ril.v3=qcomdsds
 
-#Upto 3 layers can go through overlays
+# Up to 3 layers can go through overlays
 PRODUCT_PROPERTY_OVERRIDES += persist.hwc.mdpcomp.enable=true
 
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -154,13 +153,16 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	camera.z
 
+# Audio
 PRODUCT_PACKAGES += \
-	audio_policy.default \
 	audio.primary.msm8974 \
 	audio.a2dp.default \
 	audio.usb.default \
 	audio.r_submix.default \
-	libaudio-resampler
+	libaudio-resampler \
+	libqcomvisualizer \
+	libqcomvoiceprocessing \
+	libqcomvoiceprocessingdescriptors
 
 PRODUCT_PACKAGES += \
     libmm-omxcore \
@@ -182,7 +184,7 @@ PRODUCT_PACKAGES += \
 	hwaddrs
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-	rild.libpath=/vendor/lib/libril-qc-qmi-1.so
+	rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	drm.service.enabled=true
@@ -223,8 +225,8 @@ PRODUCT_COPY_FILES += \
 # This hw ships locked, work around it with loki
 PRODUCT_PACKAGES += \
     loki.sh \
-    loki_patch \
-    loki_flash
+    loki_tool \
+    recovery-transform.sh
 
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
 
