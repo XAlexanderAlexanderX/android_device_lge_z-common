@@ -40,7 +40,7 @@ TARGET_NO_BOOTLOADER := true
 
 # Kernel information
 BOARD_KERNEL_BASE     := 0x00000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=z user_debug=31 msm_rtb.filter=0x0 mdss_mdp.panel=1:dsi:0:qcom,mdss_dsi_lgd_poled_720p_video androidboot.selinux=permissive lge.signed_image=false
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=z user_debug=31 msm_rtb.filter=0x0 mdss_mdp.panel=1:dsi:0:qcom,mdss_dsi_lgd_poled_720p_video
 BOARD_MKBOOTIMG_ARGS  := --ramdisk_offset 0x05000000 --tags_offset 0x04800000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
@@ -48,10 +48,13 @@ BOARD_KERNEL_SEPARATED_DT := true
 BOARD_CUSTOM_BOOTIMG_MK := device/lge/z-common/releasetools/mkbootimg.mk
 TARGET_KERNEL_SOURCE := kernel/lge/kk_zee
 
-TARGET_BOOTLOADER_BOARD_NAME := z
+BOARD_USES_ALSA_AUDIO:= true
+AUDIO_FEATURE_DEEP_BUFFER_PRIMARY := true
+AUDIO_FEATURE_DYNAMIC_VOLUME_MIXER := true
+
+TARGET_BOOTLOADER_BOARD_NAME := galbi
 TARGET_BOARD_PLATFORM := msm8974
 
-# Wifi
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
@@ -63,22 +66,34 @@ WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_apsta.bin"
 
-# Display / GPU
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+BOARD_EGL_CFG := device/lge/z-common/configs/egl.cfg
+
 USE_OPENGL_RENDERER := true
 TARGET_USES_ION := true
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-HAVE_ADRENO_SOURCE:= false
+TARGET_USES_OVERLAY := true
+TARGET_USES_C2D_COMPOSITION := true
+
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+
+#BOARD_USES_QCOM_HARDWARE := true
+COMMON_GLOBAL_CFLAGS += -DLG_CAMERA_HARDWARE -DLPA_DEFAULT_BUFFER_SIZE=512
+#-DQCOM_BSP -DQCOM_HARDWARE
+TARGET_DISPLAY_USE_RETIRE_FENCE := true
+
+#TARGET_QCOM_DISPLAY_VARIANT := caf
+
+# Media 
+#TARGET_QCOM_MEDIA_VARIANT := caf
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
-COMMON_GLOBAL_CFLAGS += -DLG_CAMERA_HARDWARE -DLPA_DEFAULT_BUFFER_SIZE=512
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # Audio
-BOARD_USES_ALSA_AUDIO:= true
+TARGET_USES_QCOM_COMPRESSED_AUDIO := true
+BOARD_HAVE_LOW_LATENCY_AUDIO := true
 
-# Recovery
+## Recovery
 RECOVERY_FSTAB_VERSION = 2
 TARGET_RECOVERY_FSTAB = device/lge/z-common/fstab.z
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
@@ -96,7 +111,6 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 880803840 # 840M
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 6189744128 # 5.9G
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 
-# Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/z-common/bluetooth
@@ -105,9 +119,11 @@ BOARD_BLUEDROID_VENDOR_CONF := device/lge/z-common/bluetooth/vnd_z.txt
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
 TARGET_NO_RPC := true
-TARGET_PROVIDES_GPS_LOC_API := true
 
-# Sepolicy
+BOARD_CHARGER_ENABLE_SUSPEND := true
+
+BOARD_HARDWARE_CLASS := device/lge/z-common/cmhw/
+
 BOARD_SEPOLICY_DIRS += \
         device/lge/z-common/sepolicy
 
@@ -117,23 +133,25 @@ BOARD_SEPOLICY_UNION := \
        app.te \
        file_contexts
 
-# EGL
-BOARD_EGL_CFG := device/lge/z-common/configs/egl.cfg
-MAX_EGL_CACHE_KEY_SIZE := 12*1024
-MAX_EGL_CACHE_SIZE := 2048*1024
-
-# Misc
 BOARD_NFC_HAL_SUFFIX := z
+
 BOARD_RIL_CLASS := ../../../device/lge/z-common/ril/
 TARGET_RELEASETOOLS_EXTENSIONS := device/lge/z-common/releasetools
 
 COMMON_GLOBAL_CFLAGS += -DBOARD_CHARGING_CMDLINE_NAME='"androidboot.mode"' -DBOARD_CHARGING_CMDLINE_VALUE='"chargerlogo"'
 BOARD_USES_QC_TIME_SERVICES := true
-COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
+
+# Shader cache config options
+# Maximum size of the  GLES Shaders that can be cached for reuse.
+# Increase the size if shaders of size greater than 12KB are used.
+MAX_EGL_CACHE_KEY_SIZE := 12*1024
+
+# Maximum GLES shader cache size for each app to store the compiled shader
+# binaries. Decrease the size if RAM or Flash Storage size is a limitation
+# of the device.
+MAX_EGL_CACHE_SIZE := 2048*1024
 
 # Surfaceflinger optimization for VD surfaces
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-
-TARGET_PROVIDES_LIBLIGHT := true
 
